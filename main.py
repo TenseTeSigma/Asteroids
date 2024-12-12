@@ -7,6 +7,7 @@ from circleshape import CircleShape
 import sys
 from shots import Shot
 from scoring import ScoreTracker
+import time
 
 def main():
     pygame.init()
@@ -32,6 +33,8 @@ def main():
     score_tracker = ScoreTracker()
 
     bg = pygame.image.load("/home/tense/workspace/github.com/TenseTeSigma/Images/Sigmas.jpg")
+    
+    player_lives = 3
 
     while True:
         for event in pygame.event.get():
@@ -43,11 +46,21 @@ def main():
 
         for asteroid in asteroids:
             if player.is_collide(asteroid):
-                print("GAME OVER!")
-                score_tracker.end_score()
-                pygame.quit()
-                score_tracker.reset_score()
-                sys.exit()
+                asteroid.kill()
+                player_lives = player_lives - 1
+                if player_lives <= 0:
+                    bg = pygame.image.load("/home/tense/workspace/github.com/TenseTeSigma/Images/GameOver.jpg")
+                    screen.blit(bg,(0,0))
+                    pygame.display.update()
+                    print("GAME OVER!, You ran out of lives.")
+                    score_tracker.end_score()
+                    time.sleep(5)
+                    pygame.quit()
+                    score_tracker.reset_score()
+                    sys.exit()
+                else:
+                    print(f'You lost a life you have: {player_lives} lives remaining.')
+                    player.draw(screen)
 
         for asteroid in asteroids:
             for shot in shots: 
@@ -66,7 +79,7 @@ def main():
         pygame.display.flip()
 
         # limit the framerate to 60 FPS
-        dt = clock.tick(60) / 1000
+        dt = clock.tick(144) / 1000
  
 if __name__ == "__main__":
     main()
