@@ -11,8 +11,12 @@ import time
 
 def main():
     pygame.init()
+    pygame.mixer.init()
     screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
     clock = pygame.time.Clock()
+    pygame.mixer.music.load("/home/tense/workspace/github.com/TenseTeSigma/Audios/Darius.mp3")
+    pygame.mixer.music.set_volume(0.5)
+    pygame.mixer.music.play(-1)
 
     shots = pygame.sprite.Group()
     updatable = pygame.sprite.Group()
@@ -49,6 +53,10 @@ def main():
                 asteroid.kill()
                 player_lives = player_lives - 1
                 if player_lives <= 0:
+                    pygame.mixer.music.stop()
+                    pygame.mixer.music.load("/home/tense/workspace/github.com/TenseTeSigma/Audios/Ending.mp3")
+                    pygame.mixer.music.set_volume(0.5)
+                    pygame.mixer.music.play()
                     bg = pygame.image.load("/home/tense/workspace/github.com/TenseTeSigma/Images/GameOver.jpg")
                     screen.blit(bg,(0,0))
                     pygame.display.update()
@@ -78,7 +86,6 @@ def main():
 
         pygame.display.flip()
 
-        # limit the framerate to 60 FPS
         dt = clock.tick(144) / 1000
  
 if __name__ == "__main__":
