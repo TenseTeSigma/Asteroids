@@ -12,10 +12,9 @@ class ScoreTracker():
   def streak(self):
     if self.player_score == 40:
       self.score_on_kill *= 2
-      print(self.score_on_kill)
+      
     if self.player_score == 100:
       self.score_on_kill *= 2
-      print(self.score_on_kill)
 
   def end_score(self):
     print(f"Your final score was {self.player_score}")

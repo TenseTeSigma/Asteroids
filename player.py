@@ -53,6 +53,8 @@ class Player(CircleShape):
         asteroid.kill()
         self.position = pygame.Vector2(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2)
         self.rotation = 0
+        print("Asteroid was at 0,0... asteroid removed")
       else:
         self.position = pygame.Vector2(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2)
         self.rotation = 0
+        print("No asteroid found at 0,0")

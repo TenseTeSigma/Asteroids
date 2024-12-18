@@ -13,7 +13,8 @@ from music import MusicLoader
 def main():
     pygame.init()
     pygame.mixer.init()
-    screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
+    running = True
+    screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT), pygame.FULLSCREEN)
     clock = pygame.time.Clock()
     shots = pygame.sprite.Group()
     updatable = pygame.sprite.Group()
@@ -34,14 +35,18 @@ def main():
     score_tracker = ScoreTracker()
     music_tracker = MusicLoader()
 
-    bg = pygame.image.load("/home/tense/workspace/github.com/TenseTeSigma/Images/Sigmas.jpg")
+    bg = pygame.image.load("/home/tense/workspace/github.com/TenseTeSigma/Images/Stars.jpg")
     
     player_lives = 3
     music_tracker.load_start_music()
-    while True:
+
+    while running:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
-                return
+                running = False
+            elif event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_CAPSLOCK: #Exit if  key is pressed
+                    running = False         
 
         for obj in updatable:
             obj.update(dt)
@@ -52,7 +57,7 @@ def main():
                 player.reset_position(asteroid)
                 player_lives = player_lives - 1
                 if player_lives <= 0:
-                    MusicLoader.load_lose_music()
+                    music_tracker.load_lose_music()
                     bg = pygame.image.load("/home/tense/workspace/github.com/TenseTeSigma/Images/GameOver.jpg")
                     screen.blit(bg,(0,0))
                     pygame.display.update()
@@ -64,7 +69,6 @@ def main():
                     sys.exit()
                 else:
                     print(f'You lost a life you have: {player_lives} lives remaining.')
-                    player.draw(screen)
 
         for asteroid in asteroids:
             for shot in shots: 
