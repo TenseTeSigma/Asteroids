@@ -37,8 +37,7 @@ def main():
     bg = pygame.image.load("/home/tense/workspace/github.com/TenseTeSigma/Images/Sigmas.jpg")
     
     player_lives = 3
-
-    music_loader.load_start_music()
+    music_tracker.load_start_music()
     while True:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -53,7 +52,7 @@ def main():
                 player.reset_position(asteroid)
                 player_lives = player_lives - 1
                 if player_lives <= 0:
-                    music_loader.load_lose_music()
+                    MusicLoader.load_lose_music()
                     bg = pygame.image.load("/home/tense/workspace/github.com/TenseTeSigma/Images/GameOver.jpg")
                     screen.blit(bg,(0,0))
                     pygame.display.update()
