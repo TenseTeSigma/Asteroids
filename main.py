@@ -9,6 +9,7 @@ from shots import Shot
 from scoring import ScoreTracker
 import time
 
+
 def main():
     pygame.init()
     pygame.mixer.init()
@@ -51,6 +52,7 @@ def main():
         for asteroid in asteroids:
             if player.is_collide(asteroid):
                 asteroid.kill()
+                player.reset_position()
                 player_lives = player_lives - 1
                 if player_lives <= 0:
                     pygame.mixer.music.stop()
