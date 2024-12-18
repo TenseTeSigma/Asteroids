@@ -15,7 +15,6 @@ def main():
     pygame.mixer.init()
     screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
     clock = pygame.time.Clock()
-    MusicLoader.load_start_music()
     shots = pygame.sprite.Group()
     updatable = pygame.sprite.Group()
     drawable = pygame.sprite.Group()
@@ -33,11 +32,13 @@ def main():
     dt = 0
 
     score_tracker = ScoreTracker()
+    music_tracker = MusicLoader()
 
     bg = pygame.image.load("/home/tense/workspace/github.com/TenseTeSigma/Images/Sigmas.jpg")
     
     player_lives = 3
 
+    music_loader.load_start_music()
     while True:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -49,10 +50,10 @@ def main():
         for asteroid in asteroids:
             if player.is_collide(asteroid):
                 asteroid.kill()
-                player.reset_position()
+                player.reset_position(asteroid)
                 player_lives = player_lives - 1
                 if player_lives <= 0:
-                    MusicLoader.load_lose_music()
+                    music_loader.load_lose_music()
                     bg = pygame.image.load("/home/tense/workspace/github.com/TenseTeSigma/Images/GameOver.jpg")
                     screen.blit(bg,(0,0))
                     pygame.display.update()

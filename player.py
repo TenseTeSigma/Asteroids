@@ -2,7 +2,7 @@ import pygame
 from constants import *
 from circleshape import CircleShape
 from shots import Shot
-
+from asteroid import Asteroid
 
 class Player(CircleShape):
     def __init__(self, x, y):
@@ -48,6 +48,11 @@ class Player(CircleShape):
           shot.velocity = pygame.Vector2(0,1).rotate(self.rotation) * PLAYER_SHOT_SPEED
           self.timer = PLAYER_SHOT_COOLDOWN
 
-    def reset_position(self):
-      self.position = pygame.Vector2(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2)
-      self.rotation = 0
+    def reset_position(self, asteroid):
+      if asteroid.position == pygame.Vector2(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2):
+        asteroid.kill()
+        self.position = pygame.Vector2(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2)
+        self.rotation = 0
+      else:
+        self.position = pygame.Vector2(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2)
+        self.rotation = 0
