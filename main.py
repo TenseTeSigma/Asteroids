@@ -8,17 +8,14 @@ import sys
 from shots import Shot
 from scoring import ScoreTracker
 import time
-
+from music import MusicLoader
 
 def main():
     pygame.init()
     pygame.mixer.init()
     screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
     clock = pygame.time.Clock()
-    pygame.mixer.music.load("/home/tense/workspace/github.com/TenseTeSigma/Audios/Darius.mp3")
-    pygame.mixer.music.set_volume(0.5)
-    pygame.mixer.music.play(-1)
-
+    MusicLoader.load_start_music()
     shots = pygame.sprite.Group()
     updatable = pygame.sprite.Group()
     drawable = pygame.sprite.Group()
@@ -55,10 +52,7 @@ def main():
                 player.reset_position()
                 player_lives = player_lives - 1
                 if player_lives <= 0:
-                    pygame.mixer.music.stop()
-                    pygame.mixer.music.load("/home/tense/workspace/github.com/TenseTeSigma/Audios/Ending.mp3")
-                    pygame.mixer.music.set_volume(0.5)
-                    pygame.mixer.music.play()
+                    MusicLoader.load_lose_music()
                     bg = pygame.image.load("/home/tense/workspace/github.com/TenseTeSigma/Images/GameOver.jpg")
                     screen.blit(bg,(0,0))
                     pygame.display.update()
