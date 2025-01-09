@@ -5,7 +5,7 @@ from asteroid import Asteroid
 from asteroidfield import AsteroidField
 from circleshape import CircleShape
 import sys
-from shots import Shot
+from shots import Shot, Missle
 from scoring import ScoreTracker
 import time
 from music import MusicLoader
@@ -17,12 +17,13 @@ def main():
     screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT), pygame.FULLSCREEN)
     clock = pygame.time.Clock()
     shots = pygame.sprite.Group()
+    missles = pygame.sprite.Group()
     updatable = pygame.sprite.Group()
     drawable = pygame.sprite.Group()
     asteroids = pygame.sprite.Group()
 
     Asteroid.containers = (asteroids, updatable, drawable)
-    Shot.containers = (shots, updatable, drawable)
+    Shot.containers = (shots, updatable, drawable, missles)
     AsteroidField.containers = updatable
     asteroid_field = AsteroidField()
 
@@ -41,6 +42,7 @@ def main():
     music_tracker.load_start_music()
 
     while running:
+        pygame.event.pump()
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 running = False
@@ -56,6 +58,7 @@ def main():
                 asteroid.kill()
                 player.reset_position(asteroid)
                 player_lives = player_lives - 1
+
                 if player_lives <= 0:
                     music_tracker.load_lose_music()
                     bg = pygame.image.load("/home/tense/workspace/github.com/TenseTeSigma/Images/GameOver.jpg")
@@ -63,9 +66,8 @@ def main():
                     pygame.display.update()
                     print("GAME OVER!, You ran out of lives.")
                     score_tracker.end_score()
-                    time.sleep(5)
+                    time.sleep(3)
                     pygame.quit()
-                    score_tracker.reset_score()
                     sys.exit()
                 else:
                     print(f'You lost a life you have: {player_lives} lives remaining.')
@@ -74,6 +76,14 @@ def main():
             for shot in shots: 
                 if shot.is_collide(asteroid):
                     shot.remove()
+                    asteroid.split()
+                    score_tracker.add_score()
+                    score_tracker.streak()
+        
+        for asteroid in asteroids:
+            for missle in missles:
+                if missle.is_collide(asteroid):
+                    missle.remove()
                     asteroid.split()
                     score_tracker.add_score()
                     score_tracker.streak()

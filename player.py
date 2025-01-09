@@ -1,7 +1,7 @@
 import pygame
 from constants import *
 from circleshape import CircleShape
-from shots import Shot
+from shots import Shot, Missle
 from asteroid import Asteroid
 
 class Player(CircleShape):
@@ -37,6 +37,8 @@ class Player(CircleShape):
         self.move(-dt)
       if keys[pygame.K_SPACE]:
         self.shoot()
+      if keys[pygame.K_c]:
+        self.mshot()
       
     def move(self, dt):
       forward = pygame.Vector2(0, 1).rotate(self.rotation)
@@ -58,3 +60,10 @@ class Player(CircleShape):
         self.position = pygame.Vector2(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2)
         self.rotation = 0
         print("No asteroid found at 0,0")
+
+    def mshot(self):
+      if self.timer <= 0:
+        missle = Missle(self.position.x, self.position.y)
+        missle.velocity = pygame.Vector2(0,1).rotate(self.position) * MISSLE_SPEED
+        self.timer = MISSLE_COOLDOWN
+

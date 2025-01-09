@@ -18,6 +18,4 @@ class ScoreTracker():
 
   def end_score(self):
     print(f"Your final score was {self.player_score}")
-
-  def reset_score(self):
     self.player_score = 0
